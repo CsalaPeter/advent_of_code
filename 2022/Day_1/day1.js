@@ -1,11 +1,13 @@
 const fs = require("fs");
 
-const data = fs.readFileSync("input.txt", "utf8");
-let maxCalories = 0;
-let allCal = [];
-let top3 = [0, 0, 0];
+const t0 = performance.now();
 
-data?.split("\n\n").forEach((elf) => {
+const data = fs.readFileSync("input.txt", "utf8").split("\n\n");
+let allCal = [];
+
+const t1 = performance.now();
+
+data.forEach((elf) => {
   const elfCalories = elf
     .split("\n")
     .reduce(
@@ -13,16 +15,21 @@ data?.split("\n\n").forEach((elf) => {
       0
     );
   allCal.push(elfCalories);
-  if (elfCalories > maxCalories) {
-    maxCalories = elfCalories;
-  }
 });
 
+maxCalories = allCal.sort((a, b) => b - a)[0];
+top3sum = allCal
+  .slice(0, 3)
+  .reduce(
+    (accumulator, currentValue) => accumulator + parseInt(currentValue),
+    0
+  );
+
+const t2 = performance.now();
+
+let withfl = ((t2 - t0) * 1000).toFixed(2);
+let withoutfl = ((t2 - t1) * 1000).toFixed(2);
+console.log("Runtime with file read: " + withfl + " µs.");
+console.log("Runtime without file read: " + withoutfl + " µs.");
 console.log(maxCalories);
-top3 = allCal.sort((a, b) => b - a).slice(0, 3);
-top3Sum = top3.reduce(
-  (accumulator, currentValue) => accumulator + parseInt(currentValue),
-  0
-);
-console.log(top3);
-console.log(top3Sum);
+console.log(top3sum);
