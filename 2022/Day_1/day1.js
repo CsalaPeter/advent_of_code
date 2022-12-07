@@ -3,7 +3,7 @@ const fs = require("fs");
 const t0 = performance.now();
 
 const data = fs.readFileSync("input.txt", "utf8").split("\n\n");
-let allCal = [];
+let allCal = [0];
 
 const t1 = performance.now();
 
@@ -17,13 +17,10 @@ data.forEach((elf) => {
   allCal.push(elfCalories);
 });
 
-maxCalories = allCal.sort((a, b) => b - a)[0];
-top3sum = allCal
+const maxCalories = allCal.sort((a, b) => b - a)[0];
+const top3sum = allCal
   .slice(0, 3)
-  .reduce(
-    (accumulator, currentValue) => accumulator + parseInt(currentValue),
-    0
-  );
+  .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
 const t2 = performance.now();
 
